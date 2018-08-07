@@ -67,6 +67,7 @@ class TabBar extends React.Component {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                 >
+                    {this.props.prefixTab && this.props.prefixTab()}
                     {this.props.tabs.map((tab, i) => {
                         if(tab === 'plus'){
                             return <TouchableOpacity ref={(component) => this.tabComponent.push(component)}
