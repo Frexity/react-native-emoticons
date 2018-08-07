@@ -31,7 +31,7 @@ require('string.fromcodepoint');
 
 const categories = ['People', 'Nature', 'Foods', 'Activity', 'Places', 'Objects', 'Symbols', 'Flags'];
 const filters = ['white_frowning_face'];
-const blockIconNum = 23;
+const blockIconNum = 24;
 let choiceness = ['grinning', 'grin', 'joy', 'sweat_smile', 'laughing', 'wink', 'blush', 'yum', 'heart_eyes', 'kissing_heart',
     'kissing_smiling_eyes', 'stuck_out_tongue_winking_eye', 'sunglasses', 'smirk', 'unamused', 'thinking_face',
     'flushed', 'rage', 'triumph', 'sob', 'mask', 'sleeping', 'zzz', 'hankey', 'ghost', '+1', '-1', 'facepunch', 'v',
@@ -54,9 +54,9 @@ class Emoticons extends React.Component {
         this._onEmoticonPress = this._onEmoticonPress.bind(this);
         this.state = {
             data: [],
-            groupIndex: Platform.OS === 'android' ? 0 : 1,
+            groupIndex: 0,
             showWV: false,
-            position: new Animated.Value(this.props.show ? 0 : -300),
+            position: new Animated.Value(this.props.show ? 0 : -220),
             wvPosition: new Animated.Value(-height),
             history: [],
             currentMainTab: 0,
@@ -99,7 +99,7 @@ class Emoticons extends React.Component {
             this.state.position,
             {
                 duration: 300,
-                toValue: this.props.show ? 0 : -300
+                toValue: this.props.show ? 0 : -220
             }
         ).start();
         Animated.timing(
@@ -199,7 +199,6 @@ class Emoticons extends React.Component {
     }
 
     render() {
-
         const the = this;
         let groupIndex = this.props.showPlusBar ? 1 : 0;
         let group = emoji => {
@@ -214,7 +213,7 @@ class Emoticons extends React.Component {
                 return groupView;
             const blocks = Math.ceil(emoji.length / blockIconNum);
             for (let i = 0; i < blocks; i++) {
-                let ge = _.slice(emoji, i * blockIconNum, (i + 1) * blockIconNum);
+                let ge = _.slice(emoji, i * blockIconNum, (i + 1) * blockIconNum);                
                 groupView.push(
                     <View style={styles.groupView} key={emoji[0]['name']+'block'+i}
                           tabLabel={emoji[0]['name']+'block'+i}>
@@ -240,20 +239,6 @@ class Emoticons extends React.Component {
 
                             })
                         }
-                        {
-                            (this.props.asyncRender && this.state.currentDotTab[this.state.currentMainTab] == i)
-                            || !this.props.asyncRender ? (<TouchableOpacity
-                                onPress={()=>this._onBackspacePress()}
-                                style={[styles.emojiTouch, styles.delete]}
-                                >
-                                <Image
-                                    resizeMode={'contain'}
-                                    style={styles.backspace}
-                                    source={require('./backspace.png')}/>
-                            </TouchableOpacity>) : null
-                        }
-
-
                     </View>
                 );
             }
@@ -350,11 +335,16 @@ class Emoticons extends React.Component {
                 }
             });
         }
-
-
+        const isNotDisplay = !this.props.show && (this.state.position._value === -220)
         return (
             (!this.state.showWV) ?
-                <Animated.View style={[this.props.style,styles.container,{bottom: this.state.position}]}>
+                <Animated.View
+                    hidden
+                    style={[
+                        this.props.style,styles.container,
+                        {marginBottom: this.state.position, opacity: isNotDisplay ? 0 : 100}
+                    ]}
+                    onLayout={this.props.onLayout}>
                     <ScrollableTabView
                         tabBarPosition='overlayBottom'
                         renderTabBar={() => <TabBar {...this.props} onPlusPress={this._onPlusPress.bind(this)}/>}

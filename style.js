@@ -27,11 +27,13 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: '#fff',
-        height: 300,
+        height: 220,
         width: width,
-        position: 'absolute',
-        bottom: 0,
-        left:0,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderTopColor: '#b2b2b2'
+        // position: 'absolute',
+        // bottom: 0,
+        // left:0,
     },
     emoji: {
         textAlign: 'center',
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     },
     emojiTouch:{
         width: (width-30)/6,
-        height: 50,
+        height: 30,
         justifyContent: 'center',
         alignItems: 'center'
     },
