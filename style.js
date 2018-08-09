@@ -37,13 +37,18 @@ const styles = StyleSheet.create({
     },
     emoji: {
         textAlign: 'center',
-        fontSize: 25,
-        lineHeight: 30,
+        ...Platform.select({
+            ios: { fontSize: 25, lineHeight: 30 },
+            android: { fontSize: 20, lineHeight: 28 }
+        }),
         color: '#rgba(0,0,0,1)'
     },
     emojiTouch:{
         width: (width-30)/6,
-        height: 30,
+        ...Platform.select({
+            ios: { height: 30 },
+            android: { height: 28 }
+        }),
         justifyContent: 'center',
         alignItems: 'center'
     },
